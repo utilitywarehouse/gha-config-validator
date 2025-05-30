@@ -5,4 +5,4 @@ namespace: contact-channels
 configMapGenerator:
   - name: novalidate
     files:
-      - random.json=./config.json
+      - random.json=./config/config.json

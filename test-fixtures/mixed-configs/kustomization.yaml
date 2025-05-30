@@ -8,7 +8,7 @@ configMapGenerator:
       labels:
         uw.systems.validate: test-fixtures/kustomization-root-json/schema.json
     files:
-      - random.yaml=./config.yaml
+      - random.yaml=./config/config.yaml
   - name: novalidate
     files:
-      - random.json=./config.json
+      - random.json=./config/config.json

@@ -8,4 +8,4 @@ configMapGenerator:
       labels:
         uw.systems.validate: test-fixtures/kustomization-root-json/schema.json
     files:
-      - random.json=./config.json
+      - random.json=./config/config.json

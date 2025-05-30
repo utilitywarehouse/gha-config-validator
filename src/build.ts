@@ -8,6 +8,7 @@ export type ConfigMap = {
   kind: string;
   metadata: {
     name: string;
+    namespace: string;
     labels: {
       [key: string]: string;
     };
@@ -28,7 +29,9 @@ export async function getConfigMaps(
     .filter((s) => s.kind === "ConfigMap")
     .filter(
       (s) =>
-        s.metadata.labels.length > 0 &&
+        !!s.metadata &&
+        !!s.metadata.labels &&
+        Object.keys(s.metadata.labels).length > 0 &&
         !!s.metadata.labels["uw.systems.validate"]
     )
     .map((s) => s as ConfigMap);
@@ -39,11 +42,12 @@ async function kustomizeBuildDirs(
   paths: string[]
 ): Promise<string> {
   checkKustomize();
-
+  console.debug("finding roots" + rootDir + paths);
   let kustomizationRoots = findKustomizationRoots(rootDir, paths).filter(
-    (s) => !checkIfIsComponent(path.join(rootDir, s, "kustomization.yaml"))
+    (s) => !checkIfIsComponent(path.join(s, "kustomization.yaml"))
   );
 
+  console.debug("building manifests for roots" + kustomizationRoots);
   const builtManifests = await buildManifests(kustomizationRoots, rootDir);
 
   let result = "";
@@ -64,10 +68,16 @@ function findKustomizationRoots(root: string, paths: string[]): string[] {
 function findKustomizationRoot(repoRoot: string, relativePath: string): string {
   let dir = path.dirname(path.join(repoRoot, relativePath));
   while (dir != repoRoot) {
+    console.log(`findKustomizationRoot. Enter loop. Current dir:  ${dir}`);
+
     if (existsSync(path.join(dir, "kustomization.yaml"))) {
+      console.log(`found kustomization.yaml:  ${dir}`);
       return dir;
     }
-    dir = path.resolve(path.dirname(dir), "..");
+    dir = path.resolve(path.dirname(dir));
+    if (dir === "/") {
+      break;
+    }
   }
 
   return "";
@@ -97,7 +107,7 @@ async function buildManifests(
   const result = {};
 
   for (const k of kustomizationRoots) {
-    const output = await kustomizeBuild(path.join(rootDir, k));
+    const output = await kustomizeBuild(k);
 
     result[k] = output;
   }
@@ -110,12 +120,18 @@ async function kustomizeBuild(path: string): Promise<string> {
 
   const promise = new Promise<string>((resolve, reject) => {
     let result = "";
+    let errors = "";
     proc.stdout.on("data", (data) => {
       result += data;
     });
+    proc.stderr.on("data", (data) => {
+      errors += data;
+    });
     proc.on("close", (code) => {
       if (code !== 0) {
-        reject("Kustomize build failed");
+        reject(
+          `Kustomize build failed. path: ${path}. errors: ${errors}. Output: ${result}`
+        );
       }
       resolve(result);
     });

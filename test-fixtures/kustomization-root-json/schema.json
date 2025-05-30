@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/utilitywarehouse/gha-configmap-validate/sample",
+  "$ref": "#/$defs/Random",
+  "$defs": {
+    "Random": {
+      "properties": {
+        "name": { "type": "string" },
+        "id": { "type": "string" },
+        "number": { "type": "integer" }
+      },
+      "required": ["name", "id", "number"],
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

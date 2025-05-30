@@ -8,7 +8,7 @@ type Test = {
   expected: ConfigMap[];
 };
 
-const tests = [
+const tests: Test[] = [
   {
     name: "grabs all configmaps from file",
     files: ["test-fixtures/kustomization-root-json/schema.json"],
@@ -16,7 +16,7 @@ const tests = [
       {
         apiVersion: "v1",
         data: {
-          "config.json": fs
+          "random.json": fs
             .readFileSync(
               "test-fixtures/kustomization-root-json/config/config.json"
             )
@@ -24,7 +24,8 @@ const tests = [
         },
         kind: "ConfigMap",
         metadata: {
-          name: "random",
+          name: "random-68mg4k7kgg",
+          namespace: "contact-channels",
           labels: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
@@ -40,13 +41,14 @@ const tests = [
       {
         apiVersion: "v1",
         data: {
-          "config.yaml": fs
+          "random.yaml": fs
             .readFileSync("test-fixtures/mixed-configs/config/config.yaml")
             .toString("utf-8"),
         },
         kind: "ConfigMap",
         metadata: {
-          name: "random",
+          name: "random-2h2chcckdm",
+          namespace: "contact-channels",
           labels: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
@@ -57,10 +59,11 @@ const tests = [
   },
 ];
 
-test("getConfigMaps", async (t) => {
+test("getConfigMaps", (t) => {
   for (const test of tests) {
     t.test(test.name, async (t) => {
       const configMaps = await getConfigMaps(process.cwd(), [...test.files]);
+
       t.deepEqual(configMaps, test.expected);
       t.end();
     });
