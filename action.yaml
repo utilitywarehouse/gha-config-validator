@@ -1,0 +1,10 @@
+name: Config validator
+description: Finds and checks config maps against the specified schema
+author: Álvaro <almartin@uw.co.uk>
+inputs:
+  merge-base:
+    description: The branch name or ref to compare against such as "master" whatever branch a PR is being merged into.
+    required: true
+runs:
+  using: node20
+  main: dist/index.js

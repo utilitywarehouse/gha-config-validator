@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: contact-channels
+
+configMapGenerator:
+  - name: random
+    options:
+      labels:
+        uw.systems.validate: test-fixtures/kustomization-root-json/schema.json
+    files:
+      - random.yaml=./config.yaml
+  - name: novalidate
+    files:
+      - random.json=./config.json
