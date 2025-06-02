@@ -1,6 +1,6 @@
 {
   "name": "gha-config-validator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "this github action will grab configmaps with a validation label and run a json schemachecks against them",
   "main": "dist/index.js",
   "scripts": {
