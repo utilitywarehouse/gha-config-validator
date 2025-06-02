@@ -25,6 +25,7 @@ export async function getConfigMaps(
   return (await kustomizeBuildDirs(rootDir, paths))
     .trim()
     .split("---")
+    .filter((s) => !!s)
     .map((s) => yamlParse(s.trim()))
     .filter((s) => s.kind === "ConfigMap")
     .filter(
@@ -43,9 +44,13 @@ async function kustomizeBuildDirs(
 ): Promise<string> {
   checkKustomize();
   console.debug("finding roots" + rootDir + paths);
-  let kustomizationRoots = findKustomizationRoots(rootDir, paths).filter(
-    (s) => !checkIfIsComponent(path.join(s, "kustomization.yaml"))
-  );
+  let kustomizationRoots = findKustomizationRoots(rootDir, paths)
+    .filter((s) => existsSync(path.join(s, "kustomization.yaml")))
+    .filter((s) => !checkIfIsComponent(path.join(s, "kustomization.yaml")));
+
+  if (kustomizationRoots.length === 0) {
+    return "";
+  }
 
   console.debug("building manifests for roots" + kustomizationRoots);
   const builtManifests = await buildManifests(kustomizationRoots, rootDir);
