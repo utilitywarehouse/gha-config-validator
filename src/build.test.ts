@@ -57,6 +57,11 @@ const tests: Test[] = [
       },
     ],
   },
+  {
+    name: "returns nothing if no kustomizations found",
+    files: [".nvmrc"],
+    expected: [],
+  },
 ];
 
 test("getConfigMaps", (t) => {
