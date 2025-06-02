@@ -35643,7 +35643,8 @@ function grabSchema(route) {
     for (const configMap of configMaps) {
         validateConfigMap(configMap).forEach((result) => {
             if (!result.result.valid) {
-                github.error(`The configmap "${configMap.metadata.name}" does not validate against the schema: ${JSON.stringify(result.result.errors)}`, { title: "Schema validation failed" });
+                github.error(`The configmap "${configMap.metadata.name}" does not validate against the schema`, { title: "Schema validation failed" });
+                result.result.errors.forEach((e) => github.error(`Name: ${e.name}. Path: ${e.path}. Property: ${e.property}. Message: ${e.message}.`));
                 shouldFail = true;
             }
         });
