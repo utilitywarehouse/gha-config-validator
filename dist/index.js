@@ -35533,7 +35533,7 @@ async function kustomizeBuildDirs(rootDir, paths) {
     const builtManifests = await buildManifests(kustomizationRoots);
     let result = "";
     for (const k in builtManifests) {
-        result += builtManifests[k];
+        result += "---\n" + builtManifests[k];
     }
     return result;
 }

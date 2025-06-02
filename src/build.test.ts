@@ -58,6 +58,51 @@ const tests: Test[] = [
     ],
   },
   {
+    name: "several kustomization files built",
+    files: [
+      "test-fixtures/kustomization-root-json/schema.json",
+      "test-fixtures/mixed-configs/config/config.json",
+    ],
+    expected: [
+      {
+        apiVersion: "v1",
+        data: {
+          "random.json": fs
+            .readFileSync(
+              "test-fixtures/kustomization-root-json/config/config.json"
+            )
+            .toString("utf-8"),
+        },
+        kind: "ConfigMap",
+        metadata: {
+          name: "random-68mg4k7kgg",
+          namespace: "contact-channels",
+          labels: {
+            "uw.systems.validate":
+              "test-fixtures/kustomization-root-json/schema.json",
+          },
+        },
+      },
+      {
+        apiVersion: "v1",
+        data: {
+          "random.yaml": fs
+            .readFileSync("test-fixtures/mixed-configs/config/config.yaml")
+            .toString("utf-8"),
+        },
+        kind: "ConfigMap",
+        metadata: {
+          name: "random-2h2chcckdm",
+          namespace: "contact-channels",
+          labels: {
+            "uw.systems.validate":
+              "test-fixtures/kustomization-root-json/schema.json",
+          },
+        },
+      },
+    ],
+  },
+  {
     name: "returns nothing if no kustomizations found",
     files: [".nvmrc"],
     expected: [],

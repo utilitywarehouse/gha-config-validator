@@ -58,7 +58,7 @@ async function kustomizeBuildDirs(
   let result = "";
 
   for (const k in builtManifests) {
-    result += builtManifests[k];
+    result += "---\n" + builtManifests[k];
   }
   return result;
 }
