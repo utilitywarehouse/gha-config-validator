@@ -11,7 +11,9 @@ export type ValidationResult = {
 
 export function validateConfigMap(configMap: ConfigMap): ValidationResult[] {
   const v = new Validator();
-  const schema = grabSchema(configMap.metadata.labels["uw.systems.validate"]);
+  const schema = grabSchema(
+    configMap.metadata.annotations["uw.systems.validate"]
+  );
   const results: ValidationResult[] = [];
   for (const config in configMap.data) {
     let parsedConfig;
