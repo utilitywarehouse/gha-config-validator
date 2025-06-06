@@ -35513,12 +35513,12 @@ async function getConfigMaps(rootDir, paths) {
         .split("---")
         .filter((s) => !!s)
         .map((s) => parse(s.trim()))
+        .map((s) => s)
         .filter((s) => s.kind === "ConfigMap")
         .filter((s) => !!s.metadata &&
-        !!s.metadata.annotation &&
-        Object.keys(s.metadata.annotation).length > 0 &&
-        !!s.metadata.annotation["uw.systems.validate"])
-        .map((s) => s);
+        !!s.metadata.annotations &&
+        Object.keys(s.metadata.annotations).length > 0 &&
+        !!s.metadata.annotations["uw.systems.validate"]);
 }
 async function kustomizeBuildDirs(rootDir, paths) {
     checkKustomize();
@@ -35603,7 +35603,7 @@ async function kustomizeBuild(path) {
 
 function validateConfigMap(configMap) {
     const v = new Validator_1();
-    const schema = grabSchema(configMap.metadata.labels["uw.systems.validate"]);
+    const schema = grabSchema(configMap.metadata.annotations["uw.systems.validate"]);
     const results = [];
     for (const config in configMap.data) {
         let parsedConfig;
