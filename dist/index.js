@@ -35515,9 +35515,9 @@ async function getConfigMaps(rootDir, paths) {
         .map((s) => parse(s.trim()))
         .filter((s) => s.kind === "ConfigMap")
         .filter((s) => !!s.metadata &&
-        !!s.metadata.labels &&
-        Object.keys(s.metadata.labels).length > 0 &&
-        !!s.metadata.labels["uw.systems.validate"])
+        !!s.metadata.annotation &&
+        Object.keys(s.metadata.annotation).length > 0 &&
+        !!s.metadata.annotation["uw.systems.validate"])
         .map((s) => s);
 }
 async function kustomizeBuildDirs(rootDir, paths) {

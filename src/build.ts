@@ -9,7 +9,10 @@ export type ConfigMap = {
   metadata: {
     name: string;
     namespace: string;
-    labels: {
+    labels?: {
+      [key: string]: string;
+    };
+    annotations?: {
       [key: string]: string;
     };
   };
@@ -27,15 +30,15 @@ export async function getConfigMaps(
     .split("---")
     .filter((s) => !!s)
     .map((s) => yamlParse(s.trim()))
+    .map((s) => s as ConfigMap)
     .filter((s) => s.kind === "ConfigMap")
     .filter(
       (s) =>
         !!s.metadata &&
-        !!s.metadata.labels &&
-        Object.keys(s.metadata.labels).length > 0 &&
-        !!s.metadata.labels["uw.systems.validate"]
-    )
-    .map((s) => s as ConfigMap);
+        !!s.metadata.annotations &&
+        Object.keys(s.metadata.annotations).length > 0 &&
+        !!s.metadata.annotations["uw.systems.validate"]
+    );
 }
 
 async function kustomizeBuildDirs(

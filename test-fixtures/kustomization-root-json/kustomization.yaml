@@ -5,7 +5,7 @@ namespace: contact-channels
 configMapGenerator:
   - name: random
     options:
-      labels:
+      annotations:
         uw.systems.validate: test-fixtures/kustomization-root-json/schema.json
     files:
       - random.json=./config/config.json

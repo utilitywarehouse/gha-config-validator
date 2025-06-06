@@ -26,7 +26,7 @@ const tests: Test[] = [
         metadata: {
           name: "random-68mg4k7kgg",
           namespace: "contact-channels",
-          labels: {
+          annotations: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
           },
@@ -49,7 +49,7 @@ const tests: Test[] = [
         metadata: {
           name: "random-2h2chcckdm",
           namespace: "contact-channels",
-          labels: {
+          annotations: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
           },
@@ -77,7 +77,7 @@ const tests: Test[] = [
         metadata: {
           name: "random-68mg4k7kgg",
           namespace: "contact-channels",
-          labels: {
+          annotations: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
           },
@@ -94,7 +94,7 @@ const tests: Test[] = [
         metadata: {
           name: "random-2h2chcckdm",
           namespace: "contact-channels",
-          labels: {
+          annotations: {
             "uw.systems.validate":
               "test-fixtures/kustomization-root-json/schema.json",
           },
