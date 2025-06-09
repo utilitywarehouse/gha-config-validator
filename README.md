@@ -6,7 +6,7 @@ This is a github action meant to ease config validation on CI. It will validate 
 configMapGenerator:
   - name: a-configuration-file
     options:
-      labels:
+      annotations:
         uw.systems.validate: "path/from/repo/root/schema.json"
     files:
       - config.yaml=./config.yaml
@@ -26,7 +26,7 @@ jobs:
           # Need all history for the action to calculate the diff.
           fetch-depth: 0
       - name: Validate
-        uses: utilitywarehouse/gha-config-validator@v0.1.2
+        uses: utilitywarehouse/gha-config-validator@v0.1.5
         with:
           merge-base: origin/main
 ```
