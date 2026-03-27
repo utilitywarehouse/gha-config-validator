@@ -12,7 +12,7 @@
   "dependencies": {
     "@actions/core": "^1.10.0",
     "jsonschema": "^1.5.0",
-    "yaml": "^2.2.1"
+    "yaml": "^2.8.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
